@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BookDemo</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="gser">GCM SERVICE</string>
+    <string name="ACT">Activate</string>
+</resources>
