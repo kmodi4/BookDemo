@@ -28,6 +28,15 @@ public class MainActivity extends AppCompatActivity {
                 startService(registrationIntent);
             }
         });
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent unregistered = new Intent("com.google.android.c2dm.intent.UNREGISTERED");
+                unregistered.putExtra("app",PendingIntent.getBroadcast(view.getContext(),0,new Intent(),0));
+                startService(unregistered);
+            }
+        });
     }
 
     @Override
