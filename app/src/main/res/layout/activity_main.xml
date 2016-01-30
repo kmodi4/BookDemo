@@ -11,12 +11,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
+    <ViewFlipper
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:id="@+id/imageView2"
         android:layout_marginTop="15dp"
-         />
+        android:id="@+id/viewFlipper">
+
+    </ViewFlipper>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleview"
         android:layout_width="match_parent"

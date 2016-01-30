@@ -3,6 +3,7 @@ package com.example.karan.bookdemo;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class Radpater extends RecyclerView.Adapter<Radpater.Myviewholder> {
 
         listinfo current = data.get(position);
         holder.title.setText(current.title);
+        Log.i("title",current.title);
         holder.icon.setImageResource(current.icon);
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override

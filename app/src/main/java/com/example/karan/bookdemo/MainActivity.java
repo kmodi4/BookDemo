@@ -7,13 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,18 +27,20 @@ import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
 public class MainActivity extends AppCompatActivity {
 
-    public int currentimageindex=0;
-    Timer timer;
-    TimerTask task;
-    ImageView slidingimage;
-    private int[] IMAGE_IDS = {
-            R.drawable.img1, R.drawable.img2, R.drawable.img3,
-            R.drawable.img5, R.drawable.img6,
-            R.drawable.img7
+    private ViewFlipper mViewFlipper;
+    private GestureDetector mGestureDetector;
+
+    int[] resources = {
+            R.drawable.img1,
+            R.drawable.img2,
+            R.drawable.img3,
+            R.drawable.img4,
+            R.drawable.img5,
+            R.drawable.img6
     };
 
-    RecyclerView recyclerView,rv1;
 
+    RecyclerView recyclerView,rv1;
     Radpater radpater;
 
 
@@ -43,29 +48,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Handler mHandler = new Handler();
-        final Runnable mUpdateResults = new Runnable() {
-            public void run() {
 
-                AnimateandSlideShow();
+        mViewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
 
-            }
-        };
-        int delay = 1000; // delay for 1 sec.
+        // Add all the images to the ViewFlipper
+        for (int i = 0; i < resources.length; i++) {
+            ImageView imageView = new ImageView(this);
+            imageView.setImageResource(resources[i]);
+            mViewFlipper.addView(imageView);
+        }
 
-        int period = 3000; // repeat every 4 sec.
+        // Set in/out flipping animations
+        mViewFlipper.setInAnimation(this, android.R.anim.fade_in);
+        mViewFlipper.setOutAnimation(this, android.R.anim.fade_out);
 
-        Timer timer = new Timer();
+        CustomGestureDetector customGestureDetector = new CustomGestureDetector();
+        mGestureDetector = new GestureDetector(this, customGestureDetector);
+        mViewFlipper.setAutoStart(true);
+        mViewFlipper.setFlipInterval(4000);
 
-        timer.scheduleAtFixedRate(new TimerTask() {
-
-            public void run() {
-
-                mHandler.post(mUpdateResults);
-
-            }
-
-        }, delay, period);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), R.drawable.divider));
@@ -107,27 +108,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onClick(View v) {
+    class CustomGestureDetector extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-        finish();
-        android.os.Process.killProcess(android.os.Process.myPid());
+            // Swipe left (next)
+            if (e1.getX() > e2.getX()) {
+                mViewFlipper.setInAnimation(MainActivity.this, R.anim.left_in);
+                mViewFlipper.setOutAnimation(MainActivity.this, R.anim.left_out);
+                mViewFlipper.showNext();
+            }
+
+            // Swipe right (previous)
+            if (e1.getX() < e2.getX()) {
+                mViewFlipper.setInAnimation(MainActivity.this, R.anim.right_in);
+                mViewFlipper.setOutAnimation(MainActivity.this, R.anim.right_out);
+                mViewFlipper.showPrevious();
+            }
+
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mGestureDetector.onTouchEvent(event);
+
+        return super.onTouchEvent(event);
     }
 
-    /**
-     * Helper method to start the animation on the splash screen
-     */
-    private void AnimateandSlideShow() {
 
-        slidingimage = (ImageView) findViewById(R.id.imageView2);
-        slidingimage.setImageResource(IMAGE_IDS[currentimageindex%IMAGE_IDS.length]);
-
-        currentimageindex++;
-
-        Animation rotateimage = AnimationUtils.loadAnimation(this, R.anim.abc_fade_in);
-
-        slidingimage.startAnimation(rotateimage);
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
