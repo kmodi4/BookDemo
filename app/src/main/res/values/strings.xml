@@ -6,4 +6,7 @@
     <string name="gser">GCM SERVICE</string>
     <string name="ACT">Activate</string>
     <string name="hey">heyThere</string>
+    <string name="topSeller">Top Seller</string>
+    <string name="clk">ClickHere></string>
+    <string name="trend">Treding This Week</string>
 </resources>

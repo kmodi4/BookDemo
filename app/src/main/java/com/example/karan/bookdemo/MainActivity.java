@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -91,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
         //recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setLayoutManager(layoutManager);
 
-       /* rv1 = (RecyclerView) findViewById(R.id.recycleview1);
+        rv1 = (RecyclerView) findViewById(R.id.recycleview1);
         rv1.setAdapter(radpater);
         LinearLayoutManager layoutManager1= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
-        rv1.setLayoutManager(layoutManager1);*/
+        rv1.setLayoutManager(layoutManager1);
 
     }
 
@@ -127,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
             if (e1.getX() > e2.getX()) {
                 mViewFlipper.setInAnimation(MainActivity.this, R.anim.left_in);
                 mViewFlipper.setOutAnimation(MainActivity.this, R.anim.left_out);
+
+
                 mViewFlipper.showNext();
             }
 
@@ -136,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
                 mViewFlipper.setOutAnimation(MainActivity.this, R.anim.right_out);
                 mViewFlipper.showPrevious();
             }
+            Log.i("motion1", String.valueOf(e1.getX()));
+            Log.i("motion2",String.valueOf(e2.getX()));
 
             return super.onFling(e1, e2, velocityX, velocityY);
         }
