@@ -2,14 +2,11 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="AppTheme.Base">
-
+        <item name="android:colorPrimary">@color/PrimaryColor</item>
+        <item name="android:colorPrimaryDark">@color/PrimaryDarkColor</item>
+        
+        <item name="android:colorAccent">@color/accent</item>
         <!-- Customize your theme here. -->
-    </style>
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/PrimaryColor</item>
-        <item name="colorPrimaryDark">@color/PrimaryDarkColor</item>
-
-        <item name="colorAccent">@color/accent</item>
     </style>
 
     <style name="fab">

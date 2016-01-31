@@ -2,11 +2,14 @@ package com.example.karan.bookdemo;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,12 +45,20 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView,rv1;
     Radpater radpater;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    ImageView image;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_detail);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        /*collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle("Collapsing");
+        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+        /*collapsingToolbarLayout.setContentScrimColor(Color.BLUE);
+        collapsingToolbarLayout.setStatusBarScrimColor(Color.GREEN);*/
 
         mViewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
 

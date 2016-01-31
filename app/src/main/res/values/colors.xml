@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="normal">#ffffff</color>
+    <color name="itemselected">#EDEDED</color>
+    <color name="PrimaryColor">#A047BC</color>
+    <color name="PrimaryDarkColor">#7A00A3</color>
+    <color name="accent">#FFFF75</color>
+</resources>
