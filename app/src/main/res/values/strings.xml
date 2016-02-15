@@ -30,4 +30,6 @@
     <string name="title_activity_login">login</string>
     <string name="title_activity_catg_view">CatgView</string>
     <string name="title_activity_rgrid_view">RGridView</string>
+    <string name="refub">Refurbished</string>
+    <string name="books">Books</string>
 </resources>
