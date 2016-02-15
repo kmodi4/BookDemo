@@ -9,6 +9,16 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- <item name="android:windowBackground">@drawable/background_splash</item>  -->
+        <item name="android:colorPrimaryDark">@color/bg_splash</item>
+    </style>
+
+    <style name="login" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorPrimaryDark">@color/loginScreen</item>
+        <item name="android:colorPrimary">#E91E63</item>
+    </style>
+
     <style name="fab">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

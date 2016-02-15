@@ -14,16 +14,14 @@ import android.widget.Toast;
 import java.util.Collections;
 import java.util.List;
 
-
-public class Radpater extends RecyclerView.Adapter<Radpater.Myviewholder> {
-
+public class RVadapter extends RecyclerView.Adapter<RVadapter.Myviewholder> {
     private LayoutInflater inflater;
     Context context;
 
     int previousposition = 0;
     List<listinfo> data = Collections.emptyList();
 
-    public Radpater(Context c,List<listinfo> data){
+    public RVadapter(Context c,List<listinfo> data){
         inflater = LayoutInflater.from(c);
         context = c;
         this.data = data;
@@ -31,7 +29,7 @@ public class Radpater extends RecyclerView.Adapter<Radpater.Myviewholder> {
 
     @Override
     public Myviewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view=inflater.inflate(R.layout.horizontal_row, parent, false);
+        View view=inflater.inflate(R.layout.custom_row, parent, false);
         Myviewholder myviewholder = new Myviewholder(view);
         return myviewholder;
     }
@@ -41,7 +39,7 @@ public class Radpater extends RecyclerView.Adapter<Radpater.Myviewholder> {
 
         listinfo current = data.get(position);
         holder.title.setText(current.title);
-        Log.i("title",current.title);
+        Log.i("title", current.title);
         holder.icon.setImageResource(current.icon);
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +88,8 @@ public class Radpater extends RecyclerView.Adapter<Radpater.Myviewholder> {
         public Myviewholder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
-            title = (TextView) itemView.findViewById(R.id.textView2);
-            icon = (ImageView) itemView.findViewById(R.id.imageView3);
+            title = (TextView) itemView.findViewById(R.id.CustTxt);
+            icon = (ImageView) itemView.findViewById(R.id.custImg);
 
 
         }

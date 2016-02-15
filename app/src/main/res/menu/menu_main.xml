@@ -2,5 +2,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+        android:orderInCategory="100"
+         app:showAsAction="never" />
+
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/magnify"
+        android:orderInCategory="200"
+        android:title="@string/search"
+        app:showAsAction="always"
+        />
+
+
+
+    <item android:id="@+id/login"
+        android:icon="@drawable/account"
+        android:title="@string/login"
+        android:orderInCategory="400"
+        app:showAsAction="ifRoom"
+         />
 </menu>

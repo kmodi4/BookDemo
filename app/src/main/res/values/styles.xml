@@ -12,6 +12,17 @@
         <item name="colorAccent">@color/accent</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+       <!-- <item name="windowBackground">@drawable/background_splash</item>  -->
+        <item name="colorPrimaryDark">@color/bg_splash</item>
+    </style>
+
+    <style name="login" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/loginScreen</item>
+        <item name="colorPrimary">#E91E63</item>
+
+    </style>
+
     <style name="fab">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
