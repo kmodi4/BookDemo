@@ -6,15 +6,20 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".splash"
             android:label="@string/app_name"
@@ -56,6 +61,39 @@
         <activity
             android:name=".RGridView"
             android:label="@string/title_activity_rgrid_view"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.karan.bookdemo.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Product_detail"
+            android:label="@string/title_activity_product_detail"
+            android:parentActivityName=".MainActivity" >
+>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.karan.bookdemo.MainActivity" />
+        </activity>
+        <activity
+            android:name=".signup"
+            android:label="@string/title_activity_signup"
+            android:parentActivityName=".login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.karan.bookdemo.login" />
+        </activity>
+        <activity
+            android:name=".sellbook"
+            android:label="@string/title_activity_sellbook"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.karan.bookdemo.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ZxingDemo"
+            android:label="Scanner"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

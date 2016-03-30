@@ -8,6 +8,9 @@
         layout="@layout/tool_bar" />
 
 
+
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/catrecycle"
         android:layout_width="match_parent"

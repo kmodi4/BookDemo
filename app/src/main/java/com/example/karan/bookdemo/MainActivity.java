@@ -1,10 +1,6 @@
 package com.example.karan.bookdemo;
 
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Handler;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,9 +17,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,8 +25,6 @@ import android.widget.ViewFlipper;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
@@ -51,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     RecyclerView recyclerView,rv1;
     Radpater radpater;
-    TextView t1,t2;
+    TextView t1,t2,hn,he;
+    Bundle b;
 
 
     @Override
@@ -65,6 +57,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
         t1 = (TextView) findViewById(R.id.textView4);
         t2 = (TextView) findViewById(R.id.textView6);
+        hn = (TextView) findViewById(R.id.headername1);
+        he= (TextView) findViewById(R.id.headeremail1);
+        //hn.setText("hey");
+
+        b = getIntent().getExtras();
+
 
         mViewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
 
@@ -92,12 +90,14 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         animator.setAddDuration(1000);
         animator.setRemoveDuration(1000);
         recyclerView.setItemAnimator(animator);
-        radpater = new Radpater(getApplicationContext(),getData());
+        radpater = new Radpater(MainActivity.this,getData());
+        //AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(radpater);
+        //recyclerView.setAdapter(new ScaleInAnimationAdapter(alphaAdapter));
         recyclerView.setAdapter(radpater);
         LinearLayoutManager layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         //recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setHasFixedSize(true);
         rv1 = (RecyclerView) findViewById(R.id.recycleview1);
         rv1.setAdapter(radpater);
         LinearLayoutManager layoutManager1= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
@@ -122,6 +122,34 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        if(b!=null){
+            String sbu1="";
+            String nm = "";
+            if(b.containsKey("name")) {
+                nm = b.getString("name");
+                //Toast.makeText(getApplicationContext(),nm,Toast.LENGTH_SHORT).show();
+                int index = nm.indexOf("@");
+                if (index != -1) {
+                    sbu1 = nm.substring(0, index);
+                }
+
+
+                Toast.makeText(getApplicationContext(), sbu1, Toast.LENGTH_SHORT).show();
+//                hn.setText(sbu1);
+                //he.setText(nm);
+            }
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.loginmenu);
+            /*Menu drawerMenu = navigationView.getMenu();
+            for (int i = 1; i <= 3; i++) {
+                drawerMenu.add("Runtime item "+ i);
+            }*/
+
+        }
+
+
+
+
         t1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,9 +157,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 Intent i = new Intent(MainActivity.this,CatgView.class);
                 TextView tv3 = (TextView)findViewById(R.id.textView3);
                 String s1= tv3.getText().toString();
-                i.putExtra("cat",s1);
+                i.putExtra("cat", s1);
                 Toast.makeText(getBaseContext(), s1, Toast.LENGTH_SHORT).show();
                 startActivity(i);
+                //finish();
 
             }
         });
@@ -142,9 +171,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 Intent i = new Intent(MainActivity.this,RGridView.class);
                 TextView tv3 = (TextView)findViewById(R.id.textView5);
                 String s1= tv3.getText().toString();
-                i.putExtra("cat",s1);
+                i.putExtra("cat", s1);
                 Toast.makeText(getBaseContext(), s1, Toast.LENGTH_SHORT).show();
                 startActivity(i);
+               // finish();
             }
         });
 
@@ -154,8 +184,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         List<listinfo> data = new ArrayList<>();
         int[] icon = {R.drawable.b1,
                 R.drawable.b2, R.drawable.b3, R.drawable.b4, R.drawable.b5,
-                R.drawable.img7,R.drawable.img8,R.drawable.img9,
-                R.drawable.img10,};
+                R.drawable.b6,R.drawable.b7,R.drawable.b8,
+                R.drawable.b9,};
         String[] title = {"Book 1","Book 2","Book 3","Book 4","Book 5",
                 "Book 6","Book 7","Book 8","Book 9"};
 
@@ -183,6 +213,27 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
     }
 
+    class NavMenuClass{
+        Menu menu;
+        ArrayList items;
+
+        public NavMenuClass(Menu menu,ArrayList items){
+
+            this.items = items;
+            this.menu = menu;
+
+        }
+
+        public Menu getMenu(){
+            return menu;
+        }
+
+        public ArrayList getItems(){
+            return items;
+        }
+
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         int id = menuItem.getItemId();
@@ -199,6 +250,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         } else if (id == R.id.nav_send) {
 
+        }
+          else if (id == R.id.sell_book){
+            Intent i = new Intent(MainActivity.this,sellbook.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

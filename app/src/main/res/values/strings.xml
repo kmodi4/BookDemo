@@ -15,6 +15,7 @@
     <string name="search">Search</string>
     <string name="ref">Ref</string>
     <string name="login">log</string>
+    <string name="signed_in_fmt">Signed in as: %s</string>
 
     <string name="app_id">1675594779377399</string>
 
@@ -32,4 +33,7 @@
     <string name="title_activity_rgrid_view">RGridView</string>
     <string name="refub">Refurbished</string>
     <string name="books">Books</string>
+    <string name="title_activity_product_detail">Product_detail</string>
+    <string name="title_activity_signup">signup</string>
+    <string name="title_activity_sellbook">sellbook</string>
 </resources>

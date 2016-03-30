@@ -4,7 +4,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
+import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
 
 public class RGridView extends AppCompatActivity {
 
@@ -38,7 +39,9 @@ public class RGridView extends AppCompatActivity {
         animator.setAddDuration(1000);
         animator.setRemoveDuration(1000);
         recyclerView.setItemAnimator(animator);
-        adpater = new Radpater(getApplicationContext(),getData());
+        adpater = new Radpater(RGridView.this,getData());
+       // AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adpater);
+        //recyclerView.setAdapter(new ScaleInAnimationAdapter(alphaAdapter));
         recyclerView.setAdapter(adpater);
         //recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(true);
@@ -49,8 +52,8 @@ public class RGridView extends AppCompatActivity {
         List<listinfo> data = new ArrayList<>();
         int[] icon = {R.drawable.b1,
                 R.drawable.b2, R.drawable.b3, R.drawable.b4, R.drawable.b5,
-                R.drawable.img7,R.drawable.img8,R.drawable.img9,
-                R.drawable.img10,};
+                R.drawable.b6,R.drawable.b7,R.drawable.b8,
+                R.drawable.b9,};
         String[] title = {"Book 1","Book 2","Book 3","Book 4","Book 5",
                 "Book 6","Book 7","Book 8","Book 9"};
 

@@ -1,142 +1,54 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2e3237"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar1"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout1"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#E91E63"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_collapseMode="pin"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-    <LinearLayout
-        android:id="@+id/profileFrame"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/image10"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="20dp" />
-
-        <TextView
-            android:id="@+id/email1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="16dp" />
-
-        <Button
-            android:id="@+id/logout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:onClick="logout"
-            android:padding="10dp"
-            android:text="LogOut"
-            android:textSize="18dp" />
-    </LinearLayout>
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        >
 
 
-    <ImageView
 
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/demo" />
-
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@color/input_register_bg"
-        android:hint="@string/hint_name"
-        android:inputType="textCapWords"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="@color/input_register"
-        android:textColorHint="@color/input_register_hint" />
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/input_register_bg"
-        android:hint="@string/hint_email"
-        android:inputType="textEmailAddress"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="@color/input_register"
-        android:textColorHint="@color/input_register_hint" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-
-        android:background="@color/input_register_bg"
-        android:hint="@string/hint_password"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="@color/input_register"
-        android:textColorHint="@color/input_register_hint" />
-
-    <!-- Login Button -->
-
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dip"
-        android:background="#a4c553"
-        android:text="@string/btn_login"
-        android:textColor="@color/white" />
-
-    <!-- Link to Login Screen -->
-
-    <Button
-        android:id="@+id/btnLinkToRegisterScreen"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dip"
-        android:background="@null"
-        android:text="@string/btn_link_to_register"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/signin"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:textSize="18dp" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar1"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:background="#E91E63"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_collapseMode="pin"/>
 
 
-</LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <include android:id="@+id/act_login"
+            layout="@layout/login_detail"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+
 

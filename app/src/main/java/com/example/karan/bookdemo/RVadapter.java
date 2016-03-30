@@ -1,6 +1,7 @@
 package com.example.karan.bookdemo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,25 +38,32 @@ public class RVadapter extends RecyclerView.Adapter<RVadapter.Myviewholder> {
     @Override
     public void onBindViewHolder(Myviewholder holder, final int position) {
 
-        listinfo current = data.get(position);
+        final listinfo current = data.get(position);
         holder.title.setText(current.title);
         Log.i("title", current.title);
         holder.icon.setImageResource(current.icon);
+
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Clicked at" + (position + 1), Toast.LENGTH_SHORT).show();
-                onDelete(position);
+                //onDelete(position);
+                Intent i = new Intent(context,Product_detail.class);
+                // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("image",current.icon);
+                context.startActivity(i);
             }
         });
 
-        if(position > previousposition){
-            AnimationUtils.animate(holder,true);
+       /* if(position > previousposition){
+            AnimationUtils.(holder,true);
         }
         else{
             AnimationUtils.animate(holder,false);
         }
-        previousposition=position;
+        previousposition=position;*/
+
+       // AnimationUtils.scaleY(holder);
 
 
     }
