@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sell_book"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Sell-Book" />
+    <item
+        android:id="@+id/gallery"
+        android:icon="@drawable/ic_menu_gallery"
+        android:title="Gallery" />
+    <item
+        android:id="@+id/slideshow"
+        android:icon="@drawable/ic_menu_slideshow"
+        android:title="Slideshow" />
+    <item
+        android:id="@+id/manage"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Tools" />
+</menu>
