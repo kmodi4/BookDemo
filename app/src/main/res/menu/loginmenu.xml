@@ -13,7 +13,7 @@
         android:icon="@drawable/ic_menu_slideshow"
         android:title="Slideshow" />
     <item
-        android:id="@+id/manage"
+        android:id="@+id/lo"
         android:icon="@drawable/ic_menu_manage"
-        android:title="Tools" />
+        android:title="LogOut" />
 </menu>
