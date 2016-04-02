@@ -172,8 +172,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
 
 
-
-
         t1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -410,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                     else {
                         editor.putBoolean("gout",false);
                     }
-                    Log.e("loging+",String.valueOf(sharedPreferences.getBoolean("g+",false)));
+                    //Log.e("loging+",String.valueOf(sharedPreferences.getBoolean("g+",false)));
 
                     editor.apply();
                     Intent i = new Intent(MainActivity.this, login.class);
