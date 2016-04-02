@@ -1,6 +1,7 @@
 package com.example.karan.bookdemo;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -111,8 +113,7 @@ public class sellbook extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+               imageDialog();
             }
         });
 
@@ -130,12 +131,36 @@ public class sellbook extends AppCompatActivity {
 
     }
 
+    public void imageDialog(){
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+        myAlertDialog.setTitle("Image Option");
+        myAlertDialog.setMessage("Select Image From");
+        myAlertDialog.setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                    loadImagefromGallery();
+            }
+        });
+        myAlertDialog.setNegativeButton("Camera", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                  loadfromcamera();
+            }
+        });
+        myAlertDialog.show();
+    }
+
     public void loadImagefromGallery() {
         // Create intent to Open Image applications like Gallery, Google Photos
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // Start the Intent
         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+    }
+
+    public void loadfromcamera(){
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
     }
 
     @Override
@@ -167,6 +192,7 @@ public class sellbook extends AppCompatActivity {
             //fileName="karan.jpeg";
 
             Bitmap myImg = BitmapFactory.decodeFile(picturePath);
+            imageView.setImageBitmap(myImg);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             // Must compress the Image to reduce image size to make upload easy
             myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
@@ -247,7 +273,7 @@ public class sellbook extends AppCompatActivity {
                                 JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
                                 String imageLink = imageLinks.getString("smallThumbnail");
 
-                                int pagecount  = volumeInfo.getInt("pageCount");
+                                int pagecount = volumeInfo.getInt("pageCount");
                                 pages.setText(String.valueOf(pagecount));
                                 String publish = volumeInfo.getString("publisher");
                                 publisher.setText(publish);
