@@ -35,5 +35,8 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
 
+    compile 'me.himanshusoni.chatmessageview:chat-message-view:1.0.3'
+    compile 'com.github.iammert:FastGCM:1.1'
+
 
 }

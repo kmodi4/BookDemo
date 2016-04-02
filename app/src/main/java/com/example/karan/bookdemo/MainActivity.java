@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 Toast.makeText(getApplicationContext(), sbu1, Toast.LENGTH_SHORT).show();
 //                hn.setText(sbu1);
                 //he.setText(nm);
-                if(he!=null && hn!=null){
+                if(he==null && hn==null){
                     Toast.makeText(getApplicationContext(),"Null Objects", Toast.LENGTH_SHORT).show();
                 }
                 newMenu();
