@@ -116,7 +116,6 @@
         android:id="@+id/logout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:onClick="logout"
         android:padding="10dp"
         android:text="LogOut"
         android:textSize="18sp" />

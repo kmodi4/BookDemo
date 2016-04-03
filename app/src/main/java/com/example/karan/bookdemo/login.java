@@ -1,8 +1,10 @@
 package com.example.karan.bookdemo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -55,8 +57,7 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
     private static final int RC_SIGN_IN = 9001;
 
     private GoogleApiClient mGoogleApiClient;
-
-
+    private Boolean status = false;
     private Button signup;
     private boolean mIntentInProgress;
     private boolean signedInUser;
@@ -74,6 +75,9 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
     String personId = "";
     String personPhoto="";
     String pname="";
+    private Boolean gl;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +106,11 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
             public void onClick(View view) {
                 Intent i = new Intent(login.this, signup.class);
                 startActivity(i);
-                finish();
+               // finish();
             }
         });
+
+        sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -150,26 +156,36 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
     public void onStart() {
         super.onStart();
 
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
-            Log.d("TAG", "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
-        } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-            // single sign-on will occur in this branch.
-            startprogress();
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    stopProgressDialog();
-                    handleSignInResult(googleSignInResult);
-                }
-            });
+
+         gl = sharedPreferences.getBoolean("g+",false);
+        if(gl) {
+            updateUI(true);
         }
+        else {
+            OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+            if (opr.isDone()) {
+                // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+                // and the GoogleSignInResult will be available instantly.
+                Log.d("TAG", "Got cached sign-in");
+                GoogleSignInResult result = opr.get();
+                handleSignInResult(result);
+
+            } else {
+                // If the user has not previously signed in on this device or the sign-in has expired,
+                // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+                // single sign-on will occur in this branch.
+                startprogress();
+                opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                    @Override
+                    public void onResult(GoogleSignInResult googleSignInResult) {
+                        stopProgressDialog();
+                        handleSignInResult(googleSignInResult);
+                    }
+                });
+            }
+
+        }
+
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
@@ -177,18 +193,22 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-
+            editor = sharedPreferences.edit();
 
 
             try {
                 pname=acct.getDisplayName();
                 personId = acct.getId();
+                editor.putBoolean("LStatus", true);
+                editor.putBoolean("g+",true);
+                editor.apply();
                 personEmail = acct.getEmail();
-                personPhoto = acct.getPhotoUrl().toString();
+                if(acct.getPhotoUrl().toString()!=null)
+                    personPhoto = acct.getPhotoUrl().toString();
 
                // mStatusTextView.setText(getString(R.string.signed_in_fmt,pname ));
             }catch (NullPointerException nl){
-                Toast.makeText(getApplicationContext(),"No Profile Data Found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"No Profile-Pic Found", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -198,8 +218,25 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
                 Log.i("photoUrl:",personPhoto);
             }
             //new LoadProfileImage(img).execute(personPhoto);
-
+           Log.e("G+",String.valueOf(sharedPreferences.getBoolean("g+",false)));
             updateUI(true);
+            boolean gout = sharedPreferences.getBoolean("gout",false);
+            if (gout){
+                editor.putBoolean("gout",false);
+                editor.putBoolean("LStatus", false);
+                editor.putBoolean("g+",false);
+                editor.apply();
+
+            }
+            else {
+                Intent i = new Intent(login.this, MainActivity.class);
+                //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.putExtra("name", personEmail);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(i);
+                finish();
+            }
+
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
@@ -216,7 +253,7 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
     // [END signIn]
 
     // [START signOut]
-    private void signOut() {
+    public void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
@@ -287,7 +324,7 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
     private void volleyconnect(){
         final String username=getstr(user);
         String password=getstr(pass);
-
+         editor = sharedPreferences.edit();
 
         JSONObject jo = new JSONObject();
         try {
@@ -311,7 +348,10 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
                                 Intent i = new Intent(login.this, MainActivity.class);
                                 //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 i.putExtra("name",username);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                editor.putBoolean("LStatus", true);
+                                editor.putBoolean("g+",false);
+                                editor.apply();
                                 startActivity(i);
                                 finish();
                             }

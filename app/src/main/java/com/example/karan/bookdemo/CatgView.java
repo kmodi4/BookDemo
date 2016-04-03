@@ -84,6 +84,7 @@ public class CatgView extends AppCompatActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
 
+
                 return true;
         }
 
