@@ -7,17 +7,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class Product_detail extends AppCompatActivity {
 
-    ImageView iv;
+    private ImageView iv;
+    private TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar2);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.tb);
         iv= (ImageView) findViewById(R.id.imageView4);
+        tv = (TextView) findViewById(R.id.bktitle);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             //getSupportActionBar().setHomeButtonEnabled(true);
@@ -30,7 +33,9 @@ public class Product_detail extends AppCompatActivity {
 
         if(b!=null) {
             int st = b.getInt("image");
+            String tl = b.getString("title");
             iv.setImageResource(st);
+            tv.setText(tl);
         }
     }
 

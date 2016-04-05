@@ -15,7 +15,7 @@ android:fitsSystemWindows="true">
 
 
   <include layout="@layout/tool_bar"
-      android:id="@+id/toolbar2"/>
+      android:id="@+id/tb"/>
 
 
 
@@ -31,100 +31,218 @@ android:fitsSystemWindows="true">
     android:clipToPadding="false"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fafafa"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:id="@+id/bktitle"
+            android:hint="Wings of Fire A P J Abdul Kalam"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:background="#ababab" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="220dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/b1"
+            android:id="@+id/imageView4" />
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingbar"
+            android:rating="3.5"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="5dp"
+            android:background="#ababab" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ababab"
+                android:orientation="vertical"
+                android:padding="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#ababab"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+
+                        android:text="MRP: " />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+
+                        android:text="100" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#ababab"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+
+                        android:text="Selling price: " />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+
+                        android:text="10" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#ababab"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+
+                        android:text="Discount: " />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+
+                        android:text="90%" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#462d50" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ababab"
+                android:orientation="vertical"
+                android:padding="2dp">
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:text="Seller: "
+
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="Karan Modi"
+                    android:layout_marginTop="2dp"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:textStyle="bold"
+                    android:text="Click to view detail >"
+                    android:layout_marginTop="2dp"
+                    android:layout_gravity="center"/>
+
+
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#462D50"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:text="Contact Seller"
+            android:textSize="20dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:background="#ababab" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Description"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="25dp"/>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:background="#ababab" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="It's popular that when you plan a wedding you choose a theme. It could be something like Western. Or fairytale. Or getting more specific like a peacock"/>
+
+    </LinearLayout>
 
 
 
 
 </android.support.v4.widget.NestedScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/LL">
-
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:id="@+id/imageView4"
-        android:src="@drawable/b8"
-        android:layout_gravity="center|top"
-        android:layout_marginTop="79dp" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="MRP Rs.720"
-            android:textSize="30sp"
-            android:id="@+id/textView7" />
-
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="?android:attr/ratingBarStyleSmall"
-                android:id="@+id/ratingBar"
-                android:numStars="5"
-                android:rating="3.5"
-                android:isIndicator="false"
-                android:layout_marginRight="50dp"
-                android:layout_marginEnd="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reviews    >"
-                android:layout_below="@+id/ratingBar"
-                android:layout_marginRight="50dp"
-                android:layout_marginEnd="50dp"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
-
-        </RelativeLayout>
-
-        <View style="@style/Divider"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Buy Now"
-            android:background="#FF4500"
-            android:id="@+id/button"
-            android:layout_weight="2"/>
-
-            <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:id="@+id/imageButton"
-                android:background="@drawable/cart"
-                android:layout_weight="1"/>
-
-            <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:id="@+id/imageButton2"
-                android:background="@drawable/heartbutton"
-                android:layout_weight="1"/>
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

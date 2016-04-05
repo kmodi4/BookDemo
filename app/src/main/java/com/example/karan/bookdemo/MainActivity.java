@@ -1,16 +1,19 @@
 package com.example.karan.bookdemo;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -314,6 +317,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             Intent i = new Intent(MainActivity.this,sellbook.class);
             startActivity(i);
         }
+
+        else if (id == R.id.nearby){
+            Intent i = new Intent(MainActivity.this,gps.class);
+            startActivity(i);
+        }
         else if (id == R.id.lo){
             Boolean gl = sharedPreferences.getBoolean("g+",false);
             if(status){
@@ -323,6 +331,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 editor.putBoolean("LStatus",false);
                 editor.apply();
                 oldmenu();
+                Toast.makeText(getApplicationContext(),"LogOut SuccessFully",Toast.LENGTH_SHORT).show();
             }
 
 
@@ -373,8 +382,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -382,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Intent i;
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -390,7 +403,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         switch (id){
             case R.id.action_search:
-                Toast.makeText(getBaseContext(),"coming soon",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),"coming soon",Toast.LENGTH_SHORT).show();
+                i = new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(i);
                 return true;
 
             case R.id.login:
@@ -411,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                     //Log.e("loging+",String.valueOf(sharedPreferences.getBoolean("g+",false)));
 
                     editor.apply();
-                    Intent i = new Intent(MainActivity.this, login.class);
+                    i = new Intent(MainActivity.this, login.class);
                     startActivity(i);
                 }
                 //finish();

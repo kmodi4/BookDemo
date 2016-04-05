@@ -51,6 +51,7 @@ public class RVadapter extends RecyclerView.Adapter<RVadapter.Myviewholder> {
                 Intent i = new Intent(context,Product_detail.class);
                 // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("image",current.icon);
+                i.putExtra("title",current.title);
                 context.startActivity(i);
             }
         });

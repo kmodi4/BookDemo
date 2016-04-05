@@ -51,6 +51,7 @@ public class Radpater extends RecyclerView.Adapter<Radpater.Myviewholder> {
                 Intent i = new Intent(context,Product_detail.class);
                // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("image",current.icon);
+                i.putExtra("title",current.title);
                 context.startActivity(i);
             }
         });
