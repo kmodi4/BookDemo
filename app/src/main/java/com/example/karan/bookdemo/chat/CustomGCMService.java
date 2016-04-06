@@ -39,7 +39,17 @@ public class CustomGCMService extends GCMListenerService {
                Sender = msg.substring(0,index);
             msg = msg.substring(msg.indexOf(" ")+1,msg.length());
         }
-        sendNotification(from, msg);
+
+        Intent pushmsg = new Intent("pushmsg")
+                .putExtra("data", msg)
+                .putExtra("sender",Sender);
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(pushmsg);
+
+        if(!(MyApplication.isActivityVisible())){
+            sendNotification(from, msg);
+        }
+
 
 
     }
@@ -55,11 +65,11 @@ public class CustomGCMService extends GCMListenerService {
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        Intent pushmsg = new Intent("pushmsg")
+        /*Intent pushmsg = new Intent("pushmsg")
         .putExtra("data", msg)
                 .putExtra("sender",Sender);
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(pushmsg);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(pushmsg);*/
 
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, new Random().nextInt(),

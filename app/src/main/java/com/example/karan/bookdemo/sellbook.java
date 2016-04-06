@@ -179,6 +179,7 @@ public class sellbook extends AppCompatActivity {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
         } else if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
+            
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);

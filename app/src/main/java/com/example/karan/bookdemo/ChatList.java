@@ -25,6 +25,8 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonObjectRequest;
 import com.example.karan.bookdemo.chat.ChatMessage;
 import com.example.karan.bookdemo.chat.ChatMessageAdapter;
+import com.example.karan.bookdemo.chat.MyApplication;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -141,6 +143,8 @@ public class ChatList extends AppCompatActivity {
         mAdapter.add(chatMessage);
     }
 
+
+
     private void ReceiveFromOther(String message){
         //String message = getIntent().getStringExtra("data");
         ChatMessage chatMessage = new ChatMessage(message, false, false);
@@ -182,13 +186,14 @@ public class ChatList extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        MyApplication.activityResumed();
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter("pushmsg"));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        MyApplication.activityPaused();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
 

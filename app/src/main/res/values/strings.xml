@@ -36,4 +36,14 @@
     <string name="title_activity_product_detail">Product_detail</string>
     <string name="title_activity_signup">signup</string>
     <string name="title_activity_sellbook">sellbook</string>
+    <string name="title_activity_location">Location</string>
+
+    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude</string>
+
+    <string name="no_location_detected">
+        No location detected. Make sure location is enabled on the device.
+    </string>
+    <string name="title_activity_seller_info">SellerInfo</string>
+    <string name="title_activity_search_acivity">SearchAcivity</string>
 </resources>

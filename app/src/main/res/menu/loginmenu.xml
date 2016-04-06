@@ -5,13 +5,13 @@
         android:icon="@drawable/ic_menu_camera"
         android:title="Sell-Book" />
     <item
-        android:id="@+id/gallery"
+        android:id="@+id/nearby"
         android:icon="@drawable/ic_menu_gallery"
-        android:title="Gallery" />
+        android:title="NearBy" />
     <item
-        android:id="@+id/slideshow"
+        android:id="@+id/set"
         android:icon="@drawable/ic_menu_slideshow"
-        android:title="Slideshow" />
+        android:title="Setting" />
     <item
         android:id="@+id/lo"
         android:icon="@drawable/ic_menu_manage"
