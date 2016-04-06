@@ -41,15 +41,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class login extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {

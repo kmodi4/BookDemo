@@ -106,11 +106,8 @@
         </activity>
         <activity
             android:name=".ZxingDemo"
-            android:label="Scanner"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.karan.bookdemo.MainActivity" />
+            android:label="Scanner">
+
         </activity>
         <activity
             android:name=".ChatList"
