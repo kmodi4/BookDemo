@@ -1,4 +1,4 @@
 Refurbished Book-Store App
 
 Here are Some of Screen-shots<br>
-<img src="https://drive.google.com/uc?export=download&id=0B3HPMmip1wzwLVlsRGtodUplemM"></img>
+<img src="https://drive.google.com/uc?export=download&id=0B3HPMmip1wzwLVlsRGtodUplemM" height="70" width="70"></img>
