@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/myProfile"
+        android:icon="@drawable/cont"
+        android:title="ViewProfile" />
+
+    <item android:id="@+id/EditProfile"
+        android:icon="@drawable/ic_add_box_black_48dp"
+        android:title="Inventory" />
     <item
         android:id="@+id/sell_book"
-        android:icon="@drawable/ic_menu_camera"
+        android:icon="@drawable/book52"
         android:title="Sell-Book" />
     <item
         android:id="@+id/nearby"
-        android:icon="@drawable/ic_menu_gallery"
+        android:icon="@drawable/nearme"
         android:title="NearBy" />
     <item
         android:id="@+id/set"
-        android:icon="@drawable/ic_menu_slideshow"
+        android:icon="@drawable/settings48"
         android:title="Setting" />
     <item
         android:id="@+id/lo"
-        android:icon="@drawable/ic_menu_manage"
+        android:icon="@drawable/logout"
         android:title="LogOut" />
 </menu>

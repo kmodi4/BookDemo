@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -15,27 +15,11 @@
 
 
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar1"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_width="match_parent"
-            android:background="#E91E63"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:layout_collapseMode="pin"/>
 
 
 
     </android.support.design.widget.AppBarLayout>
 
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scroll1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <include android:id="@+id/act_login"
@@ -44,7 +28,7 @@
             android:layout_width="match_parent"/>
 
 
-    </android.support.v4.widget.NestedScrollView>
+
 
 
 

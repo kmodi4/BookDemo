@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "bookdemo-84874",
+    "project_number": "642509541734",
+    "name": "BookDemo"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642509541734:android:49ecbbb157ae122a",
+        "client_id": "android:com.example.karan.bookdemo",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.example.karan.bookdemo",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642509541734-pbr08n2gm19pnhrguf8ir43ot8gmhvl4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.karan.bookdemo",
+            "certificate_hash": "6A92DAF0C09D3F5E956E7F19E467E2906C763F64"
+          }
+        },
+        {
+          "client_id": "642509541734-j1p2rfv9c1vbbampe0djdgg3hsoebnve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

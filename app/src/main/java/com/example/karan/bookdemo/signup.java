@@ -22,10 +22,10 @@ import com.android.volley.request.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class signup extends AppCompatActivity {
+public class signup extends AppCompatActivity implements MyServer{
 
-    private EditText nam,pass,email,num;
-    private static final String LOGIN_URL = "http://kmodi4.esy.es/BookDemo/registration.php";    //url of your php file
+    private EditText nam,pass,email,num,username,confimpass;
+    private static final String LOGIN_URL = MyServerUrl+"registration.php";    //url of your php file
     RequestQueue mQueue11;
     private ProgressDialog pDialog;
     Button reg;
@@ -43,15 +43,17 @@ public class signup extends AppCompatActivity {
             //getSupportActionBar().setTitle(getTitle());
         }
         nam = (EditText) findViewById(R.id.name);
+        username = (EditText)findViewById(R.id.uname);
         email = (EditText) findViewById(R.id.eid);
         pass = (EditText) findViewById(R.id.pass);
+        confimpass = (EditText) findViewById(R.id.pass1);
         num = (EditText) findViewById(R.id.num);
         reg = (Button) findViewById(R.id.reg);
 
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startprogress();
+
                 volleyconnect();
             }
         });
@@ -78,58 +80,73 @@ public class signup extends AppCompatActivity {
         return st1;
     }
 
-    private void volleyconnect(){
-        String name=getstr(nam);
-        String password=getstr(pass);
+    private void volleyconnect() {
+        String name = getstr(nam);
+        String uname = getstr(username);
+        String password = getstr(pass);
         String emailid = getstr(email);
-        String number =  (getstr(num));
+        String number = (getstr(num));
+        String cp = getstr(confimpass);
+
+        if (name.isEmpty() || uname.isEmpty() || password.isEmpty() || emailid.isEmpty() || number.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Empty fields", Toast.LENGTH_SHORT).show();
 
 
-        JSONObject jo = new JSONObject();
-        try {
-            jo.put("name",name);
-            jo.put("password",password);
-            jo.put("email",emailid);
-            jo.put("phoneno",number);
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
-        JsonObjectRequest myReq = new JsonObjectRequest(Request.Method.POST,
-                LOGIN_URL,
-                jo,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        pDialog.dismiss();
-                        try {
-                            Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
-                            int success = response.getInt("success");
-                            if(success==1) {
-                                Intent i = new Intent(signup.this, login.class);
-                                //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                //i.putExtra("name", username);
-                                startActivity(i);
-                                finish();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                pDialog.dismiss();
-                Toast.makeText(getApplicationContext(),"Unknow Error",Toast.LENGTH_SHORT).show();
-
+        else if(!(cp.equals(password))){
+            Toast.makeText(getApplicationContext(), "Password doesn't match", Toast.LENGTH_SHORT).show();
+            pass.setText("");
+            confimpass.setText("");
+        }
+        else {
+            startprogress();
+            JSONObject jo = new JSONObject();
+            try {
+                jo.put("name", name);
+                jo.put("user", uname);
+                jo.put("password", password);
+                jo.put("email", emailid);
+                jo.put("phoneno", number);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-        });
+            JsonObjectRequest myReq = new JsonObjectRequest(Request.Method.POST,
+                    LOGIN_URL,
+                    jo,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            pDialog.dismiss();
+                            try {
+                                Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                                int success = response.getInt("success");
+                                if (success == 1) {
+                                    Intent i = new Intent(signup.this, login.class);
+                                    //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    //i.putExtra("name", username);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    pDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Unknow Error", Toast.LENGTH_SHORT).show();
+
+                }
+
+            });
 
 
-        mQueue11.add(myReq);
+            mQueue11.add(myReq);
+        }
     }
 
     @Override

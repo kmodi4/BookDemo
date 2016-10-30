@@ -1,8 +1,10 @@
 package com.example.karan.bookdemo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +24,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -31,6 +34,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonObjectRequest;
+import com.bumptech.glide.Glide;
 
 
 import org.json.JSONArray;
@@ -38,12 +42,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.concurrent.ExecutionException;
 
-public class sellbook extends AppCompatActivity {
+public class sellbook extends AppCompatActivity implements MyServer {
 
     private EditText isbn, btitle, auth, bedition,
             bcondi, publisher, pages, oriprice, yprice, desc, phno;
-    private static final String LOGIN_URL = "http://kmodi4.esy.es/BookDemo/login.php";    //url of your php file
+    private static final String LOGIN_URL = MyServerUrl+"uploadBook.php";    //url of your php file
     RequestQueue mQueue11;
     private ProgressDialog pDialog;
     String manual="";
@@ -53,7 +58,13 @@ public class sellbook extends AppCompatActivity {
     private ImageView imageView;
     String encodedString;
     String fileName;
+    Bitmap myImg;
+    Button submit;
     TextWatcher isbnWatcher;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private String username;
+    String imagelink = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +88,18 @@ public class sellbook extends AppCompatActivity {
         oriprice = (EditText) findViewById(R.id.Oprice);
         yprice = (EditText) findViewById(R.id.yprice);
         desc = (EditText) findViewById(R.id.desc);
-        phno = (EditText) findViewById(R.id.phno);
+        submit = (Button) findViewById(R.id.sub);
+
+        sharedPreferences = getSharedPreferences("UserDetail", Context.MODE_PRIVATE);
+        username = sharedPreferences.getString("sellerid","");
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                volleyconnect();
+            }
+        });
+
 
 
 
@@ -91,7 +113,7 @@ public class sellbook extends AppCompatActivity {
             }
 
             public void afterTextChanged(Editable s) {
-                if (s.length() > 9) {
+                if (s.length() == 10 || s.length() == 13) {
                     //Toast.makeText(sellbook.this, "Number Entered", Toast.LENGTH_SHORT).show();
                      fetchdetails(isbn.getText().toString());
                 }
@@ -122,13 +144,32 @@ public class sellbook extends AppCompatActivity {
         isbn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(sellbook.this,ZxingDemo.class);
-                startActivityForResult(i,Req_Code);
+                isbnDialog();
             }
         });
 
 
 
+    }
+
+    public void isbnDialog(){
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+        myAlertDialog.setTitle("ISBN Number Option");
+        myAlertDialog.setMessage("Select Input From");
+        myAlertDialog.setPositiveButton("Manually", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        myAlertDialog.setNegativeButton("Scanner", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent i2 = new Intent(sellbook.this,ZxingDemo.class);
+                startActivityForResult(i2,Req_Code);
+            }
+        });
+        myAlertDialog.show();
     }
 
     public void imageDialog(){
@@ -166,81 +207,68 @@ public class sellbook extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        myImg = null;
         if (requestCode == Req_Code) {
 
             if (resultCode == Result_Code) {
                 if (data.getExtras().containsKey("decode")) {
                     isbn.setText(data.getExtras().getString("decode"));
+
                     //Toast.makeText(getApplicationContext(), "Detected Format " + data.getExtras().getString("format"), Toast.LENGTH_SHORT).show();
                 }
             }
 
-        } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
-        } else if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
-            
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            String fileNameSegments[] = picturePath.split("/");
-            fileName = fileNameSegments[fileNameSegments.length - 1];
-            //fileName="karan.jpeg";
-
-            Bitmap myImg = BitmapFactory.decodeFile(picturePath);
-            imageView.setImageBitmap(myImg);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            // Must compress the Image to reduce image size to make upload easy
-            myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
-            byte[] byte_arr = stream.toByteArray();
-            // Encode Image to String
-            encodedString = Base64.encodeToString(byte_arr, 0);
-           // t1.setText(fileName);
         }
-    }
-
-    public void uploadImage() {
-
-        //RequestQueue rq = Volley.newRequestQueue(this);
-        String url = "http://kmodi4.net76.net/img.php";
-        //Log.d("URL", url);
-
-        JSONObject jo = new JSONObject();
-        try {
-            jo.put("image", encodedString);
-            jo.put("filename", fileName);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        JsonObjectRequest jr = new JsonObjectRequest(url, jo, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject jsonObject) {
+                else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+                    myImg = (Bitmap) data.getExtras().get("data");
                 try {
-                    String msg = jsonObject.getString("message");
-                    int i = jsonObject.getInt("success");
-                    //t1.setText(msg);
-                    //prgDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e("img",myImg.toString());
+                    imageView.setImageBitmap(myImg);
+                }catch (NullPointerException e){
+                    Toast.makeText(getApplicationContext(),"Coudn't fetch image",Toast.LENGTH_SHORT).show();
                 }
 
+                } else if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
+
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                try {
+                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    String picturePath = "";
+                    if (cursor.moveToFirst()) {
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        picturePath = cursor.getString(columnIndex);
+                        cursor.close();
+                    }
+
+
+                    String fileNameSegments[] = picturePath.split("/");
+                    fileName = fileNameSegments[fileNameSegments.length - 1];
+                    //fileName="karan.jpeg";
+
+                    myImg = BitmapFactory.decodeFile(picturePath);
+                    imageView.setImageBitmap(myImg);
+                }catch (NullPointerException e){
+                    Toast.makeText(getApplicationContext(),"Coudn't fetch image",Toast.LENGTH_SHORT).show();
+                }
+                }
+            else {
+                Toast.makeText(getApplicationContext(),"Coudn't fetch image",Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-               // prgDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Error Occured but Still uploaded", Toast.LENGTH_LONG).show();
+               if (myImg != null) {
+                   ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                   // Must compress the Image to reduce image size to make upload easy
+                   myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
+                   byte[] byte_arr = stream.toByteArray();
+                   // Encode Image to String
+                   encodedString = Base64.encodeToString(byte_arr, 0);
+                   // t1.setText(fileName);
+               }
             }
-        });
-        mQueue11.add(jr);
-    }
+
+
+
+
 
     public void fetchdetails(String isbnNo){
 
@@ -272,7 +300,37 @@ public class sellbook extends AppCompatActivity {
                                 auth.setText(author);
 
                                 JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-                                String imageLink = imageLinks.getString("smallThumbnail");
+                                imagelink = imageLinks.getString("smallThumbnail");
+                                if (!(imagelink.equals(""))){
+
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                try {
+                                                    myImg = Glide.with(sellbook.this).load(imagelink).asBitmap().into(-1,-1).get();
+                                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                                    // Must compress the Image to reduce image size to make upload easy
+                                                    myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
+                                                    byte[] byte_arr = stream.toByteArray();
+                                                    // Encode Image to String
+                                                    encodedString = Base64.encodeToString(byte_arr, 0);
+
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            imageView.setImageBitmap(myImg);
+                                                        }
+                                                    });
+                                                } catch (InterruptedException | ExecutionException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }).start();
+
+
+
+
+                                }
 
                                 int pagecount = volumeInfo.getInt("pageCount");
                                 pages.setText(String.valueOf(pagecount));
@@ -326,61 +384,74 @@ public class sellbook extends AppCompatActivity {
 
     private void volleyconnect() {
 
+            //Toast.makeText(getApplicationContext(),username+"\n"+getstr(oriprice),Toast.LENGTH_LONG).show();
+            if (getstr(oriprice).equals("") || getstr(yprice).equals("")) {
+                Toast.makeText(getApplicationContext(),"Empty Fileds",Toast.LENGTH_LONG).show();
 
-        JSONObject jo = new JSONObject();
-        try {
-            jo.put("isbn", getstr(isbn));
-            jo.put("title", getstr(btitle));
-            jo.put("author", getstr(auth));
-            jo.put("edition", getstr(bedition));
-            jo.put("condition", getstr(bcondi));
-            jo.put("publisher", getstr(publisher));
-            jo.put("pages", Integer.parseInt(getstr(pages)));
-            jo.put("originalprice", Integer.parseInt(getstr(oriprice)));
-            jo.put("yourprice", Integer.parseInt(getstr(yprice)));
-            jo.put("desc", getstr(desc));
-            jo.put("phno", Integer.parseInt(getstr(phno)));
+            } else {
+                startprogress();
+                JSONObject jo = new JSONObject();
+                try {
 
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                jo.put("user", username);
+                jo.put("isbn", getstr(isbn));
+                jo.put("title", getstr(btitle));
+                jo.put("author", getstr(auth));
+                jo.put("edition", getstr(bedition));
+                jo.put("condition", getstr(bcondi));
+                jo.put("publisher", getstr(publisher));
+                jo.put("pages", Integer.parseInt(getstr(pages)));
+                jo.put("originalprice", Integer.parseInt(getstr(oriprice)));
+                jo.put("yourprice", Integer.parseInt(getstr(yprice)));
+                jo.put("desc", getstr(desc));
+                    jo.put("image", encodedString);
 
-        JsonObjectRequest myReq = new JsonObjectRequest(Request.Method.POST,
-                LOGIN_URL,
-                jo,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        pDialog.dismiss();
-                        try {
-                            Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
-                            int success = response.getInt("success");
-                            if (success == 1) {
-                                Intent i = new Intent(sellbook.this, MainActivity.class);
-                                //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                //i.putExtra("name", username);
-                                startActivity(i);
-                                finish();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    Log.e("json:",jo.toString());
 
-                    }
 
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                pDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Unknow Error", Toast.LENGTH_SHORT).show();
-
+            }catch(JSONException e){
+                e.printStackTrace();
             }
 
-        });
+            JsonObjectRequest myReq = new JsonObjectRequest(Request.Method.POST,
+                    LOGIN_URL,
+                    jo,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            pDialog.dismiss();
+                            try {
+                                Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                                int success = response.getInt("success");
+                                if (success == 1) {
+                                    Intent i = new Intent(sellbook.this, MainActivity.class);
+                                    //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    //i.putExtra("name", username);
+                                    i.putExtra("refresh",true);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    pDialog.dismiss();
+                    Log.e("err", error.getMessage());
+                    Toast.makeText(getApplicationContext(), "Unknow Error", Toast.LENGTH_SHORT).show();
+
+                }
+
+            });
 
 
-        mQueue11.add(myReq);
+            mQueue11.add(myReq);
+        }
     }
 
     @Override

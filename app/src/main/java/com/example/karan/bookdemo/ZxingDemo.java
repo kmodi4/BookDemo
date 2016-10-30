@@ -26,14 +26,15 @@ public class ZxingDemo extends AppCompatActivity implements ZXingScannerView.Res
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mScannerView.stopCamera();
+       // mScannerView.stopCamera();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
-        mScannerView.startCamera();          // Start camera on resume
+        mScannerView.startCamera();// Start camera on resume
+
     }
 
     @Override

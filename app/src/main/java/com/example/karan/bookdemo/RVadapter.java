@@ -12,13 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Collections;
 import java.util.List;
 
 public class RVadapter extends RecyclerView.Adapter<RVadapter.Myviewholder> {
     private LayoutInflater inflater;
     Context context;
-
+     private OnCallback onCallback;
     int previousposition = 0;
     List<listinfo> data = Collections.emptyList();
 
@@ -26,7 +28,10 @@ public class RVadapter extends RecyclerView.Adapter<RVadapter.Myviewholder> {
         inflater = LayoutInflater.from(c);
         context = c;
         this.data = data;
+        //onCallback = (OnCallback) c;
     }
+
+
 
     @Override
     public Myviewholder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,21 +45,32 @@ public class RVadapter extends RecyclerView.Adapter<RVadapter.Myviewholder> {
 
         final listinfo current = data.get(position);
         holder.title.setText(current.title);
+        holder.yp.setText("Selling Price: "+String.valueOf(current.yourprice));
+        holder.op.setText("MRP : "+String.valueOf(current.originalprice));
         Log.i("title", current.title);
-        holder.icon.setImageResource(current.icon);
+        //holder.icon.setImageResource(current.icon);
+        Glide.with(context)
+                .load(current.url)
+                .crossFade()
+                .placeholder(R.drawable.holder)
+                .into(holder.icon);
 
-        holder.icon.setOnClickListener(new View.OnClickListener() {
+
+
+        holder.myview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Clicked at" + (position + 1), Toast.LENGTH_SHORT).show();
-                //onDelete(position);
                 Intent i = new Intent(context,Product_detail.class);
                 // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("image",current.icon);
+                i.putExtra("image",current.url);
                 i.putExtra("title",current.title);
+                i.putExtra("yourprice",current.yourprice);
+                i.putExtra("originalprice",current.originalprice);
+                i.putExtra("seller",current.seller);
                 context.startActivity(i);
             }
         });
+
 
        /* if(position > previousposition){
             AnimationUtils.(holder,true);
@@ -88,19 +104,35 @@ public class RVadapter extends RecyclerView.Adapter<RVadapter.Myviewholder> {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    class Myviewholder extends RecyclerView.ViewHolder{
+    class Myviewholder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView title;
+        TextView title,yp,op;
         ImageView icon;
         CardView cv;
+        View myview;
 
         public Myviewholder(View itemView) {
             super(itemView);
+            myview = itemView;
             cv = (CardView)itemView.findViewById(R.id.cv);
             title = (TextView) itemView.findViewById(R.id.CustTxt);
             icon = (ImageView) itemView.findViewById(R.id.custImg);
+            yp = (TextView) itemView.findViewById(R.id.Cust_your_price);
+            op = (TextView) itemView.findViewById(R.id.Cust_original_price);
+           // config = (ImageView) itemView.findViewById(R.id.Cust_delete);
+           // itemView.setOnClickListener(this);
 
 
         }
+
+        @Override
+        public void onClick(View view) {
+            //Toast.makeText(view.getContext(), "position = " + getPosition(), Toast.LENGTH_SHORT).show();
+            //onCallback.onSelectBook(getPosition());
+        }
+    }
+
+    public interface OnCallback{
+        public void onSelectBook(int index);
     }
 }

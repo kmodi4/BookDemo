@@ -98,13 +98,14 @@ android:fitsSystemWindows="true">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-
+                        android:textColor="#ffffff"
                         android:text="MRP: " />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-
+                        android:id="@+id/op"
+                        android:textColor="#ffffff"
                         android:text="100" />
 
                 </LinearLayout>
@@ -119,13 +120,14 @@ android:fitsSystemWindows="true">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-
+                        android:textColor="#ffffff"
                         android:text="Selling price: " />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-
+                        android:id="@+id/yp"
+                        android:textColor="#ffffff"
                         android:text="10" />
 
                 </LinearLayout>
@@ -139,13 +141,14 @@ android:fitsSystemWindows="true">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-
+                        android:textColor="#ffffff"
                         android:text="Discount: " />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-
+                        android:id="@+id/dis"
+                        android:textColor="#ffffff"
                         android:text="90%" />
 
                 </LinearLayout>
@@ -156,6 +159,7 @@ android:fitsSystemWindows="true">
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
+                android:textColor="#ffffff"
                 android:layout_marginRight="10dp"
                 android:background="#462d50" />
 
@@ -163,6 +167,8 @@ android:fitsSystemWindows="true">
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:id="@+id/sellerview"
+                android:clickable="true"
                 android:background="#ababab"
                 android:orientation="vertical"
                 android:padding="2dp">
@@ -172,6 +178,7 @@ android:fitsSystemWindows="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
+                    android:textColor="#ffffff"
                     android:layout_gravity="center"
                     android:text="Seller: "
 
@@ -179,13 +186,16 @@ android:fitsSystemWindows="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
+                    android:id="@+id/sellerid"
                     android:text="Karan Modi"
                     android:layout_marginTop="2dp"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:textColor="#ffffff" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:textStyle="bold"
+                    android:textColor="#ffffff"
                     android:text="Click to view detail >"
                     android:layout_marginTop="2dp"
                     android:layout_gravity="center"/>
@@ -198,23 +208,36 @@ android:fitsSystemWindows="true">
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#462D50"
-            android:textColor="#ffffff"
-            android:textStyle="bold"
-            android:text="Contact Seller"
-            android:textSize="20dp"/>
+
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#462D50"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:onClick="contactmethod"
+                android:text="Contact Seller"
+                android:textSize="20dp"/>
+
+
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:textColor="#ffffff"
             android:layout_marginBottom="1dp"
             android:layout_marginTop="1dp"
             android:background="#ababab" />
+
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -225,6 +248,7 @@ android:fitsSystemWindows="true">
         <TextView
             android:layout_width="200dp"
             android:layout_height="2dp"
+            android:textColor="#ffffff"
             android:layout_gravity="center"
             android:layout_marginBottom="1dp"
             android:layout_marginTop="1dp"
@@ -234,7 +258,224 @@ android:fitsSystemWindows="true">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="It's popular that when you plan a wedding you choose a theme. It could be something like Western. Or fairytale. Or getting more specific like a peacock"/>
+           android:id="@+id/pdesc"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/PrimaryColor" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:text="Details"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="ISBN NO" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/pisbn"
+                 />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#66ababab" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="AUTHOR" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:id="@+id/pauthor" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#66ababab" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=" EDITION" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+               android:id="@+id/pedition" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#66ababab" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="CONDITION" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/pcondition" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#66ababab" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="PUBLISHER" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:id="@+id/ppub" />
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#66ababab" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="PAGES" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/ppages"/>
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#66ababab" />
 
     </LinearLayout>
 

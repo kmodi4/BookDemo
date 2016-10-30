@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BookDemo</string>
+    <string name="app_name">RefurbishedBook</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -16,6 +16,10 @@
     <string name="ref">Ref</string>
     <string name="login">log</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
+
+    <string name="ServerUrl">http://kmodi4.net76.net/BookDemo/</string>
+
+    <string name="gcm_defaultSenderId">642509541734</string>
 
     <string name="app_id">1675594779377399</string>
 
@@ -38,6 +42,8 @@
     <string name="title_activity_sellbook">sellbook</string>
     <string name="title_activity_location">Location</string>
 
+    <string name="facebook_app_id">1591847791128844</string>
+
     <string name="latitude_label">Latitude</string>
     <string name="longitude_label">Longitude</string>
 
@@ -46,4 +52,9 @@
     </string>
     <string name="title_activity_seller_info">SellerInfo</string>
     <string name="title_activity_search_acivity">SearchAcivity</string>
+    <string name="title_activity_my_profile">MyProfile</string>
+    <string name="title_activity_edit_profile">Edit_profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

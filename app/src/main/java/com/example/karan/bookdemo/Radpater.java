@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -41,17 +43,26 @@ public class Radpater extends RecyclerView.Adapter<Radpater.Myviewholder> {
 
         final listinfo current = data.get(position);
         holder.title.setText(current.title);
-        Log.i("title",current.title);
-        holder.icon.setImageResource(current.icon);
-        holder.icon.setOnClickListener(new View.OnClickListener() {
+       // holder.title.append("\nPrice: "+current.yourprice);
+        Log.i("title", current.title);
+       // holder.icon.setImageResource(current.icon);
+        Glide.with(context)
+                .load(current.url)
+                .crossFade()
+                .placeholder(R.drawable.holder)
+                .into(holder.img);
+        holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context, "Clicked at" + (position + 1), Toast.LENGTH_SHORT).show();
                // onDelete(position);
                 Intent i = new Intent(context,Product_detail.class);
                // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("image",current.icon);
+                i.putExtra("image",current.url);
                 i.putExtra("title",current.title);
+                i.putExtra("yourprice",current.yourprice);
+                i.putExtra("originalprice",current.originalprice);
+                i.putExtra("seller",current.seller);
                 context.startActivity(i);
             }
         });
@@ -74,6 +85,17 @@ public class Radpater extends RecyclerView.Adapter<Radpater.Myviewholder> {
         }
     }
 
+    public void Swapdata(List<listinfo> l1){
+        if (data!=null) {
+            data.clear();
+            data.addAll(l1);
+
+        }
+        else
+            data = l1;
+        notifyDataSetChanged();
+    }
+
 
 
     @Override
@@ -89,14 +111,14 @@ public class Radpater extends RecyclerView.Adapter<Radpater.Myviewholder> {
     class Myviewholder extends RecyclerView.ViewHolder{
 
         TextView title;
-        ImageView icon;
+        ImageView img;
         CardView cv;
 
         public Myviewholder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
             title = (TextView) itemView.findViewById(R.id.textView2);
-            icon = (ImageView) itemView.findViewById(R.id.imageView3);
+            img = (ImageView) itemView.findViewById(R.id.imageView3);
 
 
         }

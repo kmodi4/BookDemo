@@ -18,7 +18,7 @@
     </style>
 
     <style name="login" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">@color/loginScreen</item>
+        <item name="colorPrimaryDark">@color/bg_splash</item>
         <item name="colorPrimary">#E91E63</item>
 
     </style>
@@ -40,5 +40,21 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">?android:attr/listDivider</item>
     </style>
+
+
+        <style name="Custom" parent="android:Theme.DeviceDefault.Dialog">
+            <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
+            <item name="DialogTitleText">Registrating…</item>
+            <item name="DialogSpotColor">@android:color/holo_orange_dark</item>
+            <item name="DialogSpotCount">4</item>
+    </style>
+
+    <style name="Custom2" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="DialogTitleText">Loading…</item>
+        <item name="DialogSpotColor">@android:color/holo_orange_dark</item>
+        <item name="DialogSpotCount">4</item>
+    </style>
+
 
 </resources>

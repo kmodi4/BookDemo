@@ -4,7 +4,8 @@
     <color name="itemselected">#EDEDED</color>
     <color name="PrimaryColor">#A047BC</color>
     <color name="PrimaryDarkColor">#7A00A3</color>
-    <color name="accent">#FFFF75</color>
+    <color name="accent">#D32F2F</color>
+    <color name="spots_dialog_color">@android:color/holo_orange_dark</color>
 
     <color name="bg_login">#26ae90</color>
     <color name="bg_register">#2e3237</color>

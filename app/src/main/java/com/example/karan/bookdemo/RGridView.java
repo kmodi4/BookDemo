@@ -20,6 +20,7 @@ public class RGridView extends AppCompatActivity {
 
     RecyclerView recyclerView;
     Radpater adpater;
+    private List<listinfo> data;
 
 
     @Override
@@ -33,13 +34,18 @@ public class RGridView extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        Bundle b = getIntent().getExtras();
+        if (b!=null){
+            data = b.getParcelableArrayList("object");
+        }
+
         recyclerView = (RecyclerView) findViewById(R.id.gridrecycle);
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), R.drawable.divider));
         ScaleInAnimator animator = new ScaleInAnimator();
         animator.setAddDuration(1000);
         animator.setRemoveDuration(1000);
         recyclerView.setItemAnimator(animator);
-        adpater = new Radpater(RGridView.this,getData());
+        adpater = new Radpater(RGridView.this,data);
        // AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adpater);
         //recyclerView.setAdapter(new ScaleInAnimationAdapter(alphaAdapter));
         recyclerView.setAdapter(adpater);
@@ -48,26 +54,7 @@ public class RGridView extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
     }
 
-    public static List<listinfo> getData(){
-        List<listinfo> data = new ArrayList<>();
-        int[] icon = {R.drawable.b1,
-                R.drawable.b2, R.drawable.b3, R.drawable.b4, R.drawable.b5,
-                R.drawable.b6,R.drawable.b7,R.drawable.b8,
-                R.drawable.b9,};
-        String[] title = {"Book 1","Book 2","Book 3","Book 4","Book 5",
-                "Book 6","Book 7","Book 8","Book 9"};
 
-
-
-        for(int i=0;i<9;i++){
-            listinfo current = new listinfo();
-            current.icon = icon[i];
-            current.title = title[i];
-            data.add(current);
-        }
-        return  data;
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

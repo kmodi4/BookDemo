@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
@@ -24,12 +25,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -47,16 +64,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.util.Arrays;
 
 
 public class login extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener {
+        View.OnClickListener,GoogleApiClient.ConnectionCallbacks,MyServer {
 
     private static final int RC_SIGN_IN = 9001;
 
     private GoogleApiClient mGoogleApiClient;
     private Boolean status = false;
     private Button signup;
+    LoginButton loginButton;
+    Profile newProfile;
+    private CallbackManager callbackManager;
     private boolean mIntentInProgress;
     private boolean signedInUser;
     private ConnectionResult mConnectionResult;
@@ -66,7 +87,7 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
     private TextView username, emailLabel,mStatusTextView;
     private Button signout,login;
     private EditText user,pass;
-    private static final String LOGIN_URL = "http://kmodi4.esy.es/BookDemo/login.php";    //url of your php file
+    private static final String LOGIN_URL = MyServerUrl+"login.php";    //url of your php file
     RequestQueue mQueue11;
     private ProgressDialog pDialog;
     String personEmail = "";
@@ -74,25 +95,33 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
     String personPhoto="";
     String pname="";
     private Boolean gl;
+    AccessTokenTracker accessTokenTracker;
+    ProfileTracker profileTracker;
+    ProfilePictureView profilePictureView;
     private SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences2;
     private SharedPreferences.Editor editor;
+    private SharedPreferences.Editor editor2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar1);
+        setContentView(R.layout.login_detail);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             //getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             //getSupportActionBar().setTitle(getTitle());
-        }
-        image = (ImageView) findViewById(R.id.image10);
+        }*/
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        //image = (ImageView) findViewById(R.id.image10);
         username = (TextView) findViewById(R.id.username);
-        emailLabel = (TextView) findViewById(R.id.email1);
-        profileFrame = (LinearLayout) findViewById(R.id.profileFrame);
+
+        //profileFrame = (LinearLayout) findViewById(R.id.profileFrame);
         signinButton = (SignInButton) findViewById(R.id.gsignin);
         signout = (Button) findViewById(R.id.logout);
         login = (Button) findViewById(R.id.btnLogin);
@@ -104,23 +133,31 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
             public void onClick(View view) {
                 Intent i = new Intent(login.this, signup.class);
                 startActivity(i);
-               // finish();
+                // finish();
             }
         });
 
         sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        sharedPreferences2 = getSharedPreferences("UserDetail", Context.MODE_PRIVATE);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
+        Log.d("gApi","Start");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        //mGoogleApiClient.stopAutoManage(this);
+        gl = sharedPreferences.getBoolean("gout", false);
+        Log.i("oncrete GL:", String.valueOf(gl));
+
+
         signinButton.setSize(SignInButton.SIZE_STANDARD);
         signinButton.setScopes(gso.getScopeArray());
+
         //mStatusTextView = (TextView) findViewById(R.id.TEXTVIEW_ID_HERE);
 
 
@@ -147,20 +184,186 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
             }
         });
 
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+
+            }
+        };
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldprofile, Profile newprofile) {
+                newProfile = newprofile;
+                getProfileData(newprofile);
+
+            }
+        };
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+                AccessToken accessToken = loginResult.getAccessToken();
+                //Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
+                final SharedPreferences sp2 = getSharedPreferences("offlineprofile",Context.MODE_PRIVATE);
+                final SharedPreferences.Editor ed2 = sp2.edit();
+                Profile profile = Profile.getCurrentProfile();
+                if (profile != null) {
+                    //tv.setText("Welcome " + profile.getName());
+                }
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        accessToken,
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+
+
+                                // Application code
+
+                                try {
+                                    if(object!=null) {
+                                        Log.v("JsonResp:", object.toString());
+                                        String email = object.getString("email");
+                                        String id = object.getString("id");
+                                        String name = object.getString("name");
+                                        String userid = "";
+                                        int index = name.indexOf(" ");
+                                        if(index != -1){
+                                            userid = name.substring(0,index);
+                                        }
+                                        else {
+                                            userid = name;
+                                        }
+                                        int len = id.length();
+                                        len = len - 4;
+                                        userid = userid + id.substring(len);
+                                        String url = "https://graph.facebook.com/"+id+"/picture?height=100&width=100";
+                                        ed2.putString("Name",name);
+                                        ed2.putString("EmailId",email);
+                                       // ed2.putString("Phoneno",response.getString("Phoneno"));
+                                        ed2.putString("username",userid);
+                                        ed2.putString("url",url);
+                                        ed2.apply();
+                                        // String birthday = object.getString("birthday"); // 01/31/1980 format
+                                        Toast.makeText(getApplicationContext(), email, Toast.LENGTH_SHORT).show();
+
+                                        editor = sharedPreferences.edit();
+                                        editor2 = sharedPreferences2.edit();
+
+                                        editor.putString("url",url);
+                                        editor.putBoolean("LStatus", true);
+                                        editor.putBoolean("fblogin",true);
+                                        editor2.putString("sellerid",userid);
+                                        editor2.putString("username",name);
+                                        editor.apply();
+                                        editor2.apply();
+                                        stopProgressDialog();
+                                        Intent i= new Intent(com.example.karan.bookdemo.login.this,MainActivity.class);
+                                        i.putExtra("name",name);
+                                        startActivity(i);
+                                        finish();
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    stopProgressDialog();
+                                    Toast.makeText(getApplicationContext(),"cant get info",Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email");
+                request.setParameters(parameters);
+                startprogress();
+                request.executeAsync();
+
+
+
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+                Log.e("Err:", exception.getCause().toString());
+            }
+        });
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
+
     }
 
+    private void stopAutoManage() {
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.stopAutoManage(login.this);
+    }
+
+    public void getProfileData(Profile newprofile){
+        if(newprofile!=null) {
+           // tv.setText("Welcome " + newprofile.getName());
+            //Toast.makeText(getApplicationContext(), newprofile.getLinkUri().toString(), Toast.LENGTH_LONG).show();
+            //String url = "https://graph.facebook.com/" + newprofile.getId()+ "/picture?type=small";
+            String url = newprofile.getProfilePictureUri(100,100).toString();
+
+            Log.e("Url:",url);
+           // Glide.with(getApplicationContext()).load(url).crossFade().into(iv);
+           // profilePictureView.setProfileId(newprofile.getId());
+        }
+        else {
+           // iv.setImageDrawable(null);
+           // profilePictureView.setProfileId(null);
+           // tv.setText("Welcome to FB");
+        }
+
+    }
+
+    public void disconnectFromFacebook() {
+
+        if (AccessToken.getCurrentAccessToken() == null) {
+            return; // already logged out
+        }
+
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                .Callback() {
+            @Override
+            public void onCompleted(GraphResponse graphResponse) {
+
+                LoginManager.getInstance().logOut();
+
+            }
+        }).executeAsync();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();
+        disconnectFromFacebook();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+       // signOut();
+        Log.e("onstop:",String.valueOf(mGoogleApiClient.isConnected()));
+    }
 
     @Override
     public void onStart() {
         super.onStart();
 
 
-         gl = sharedPreferences.getBoolean("g+",false);
-        if(gl) {
-            updateUI(true);
-        }
-        else {
-            OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        // gl = sharedPreferences.getBoolean("g+",false);
+
+          /*  OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
             if (opr.isDone()) {
                 // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
                 // and the GoogleSignInResult will be available instantly.
@@ -180,29 +383,61 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
                         handleSignInResult(googleSignInResult);
                     }
                 });
-            }
+            }*/
 
-        }
+
 
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d("TAG", "handleSignInResult:" + result.isSuccess());
+
+
+
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             editor = sharedPreferences.edit();
+            editor2 = sharedPreferences2.edit();
 
-
+            final SharedPreferences sp2 = getSharedPreferences("offlineprofile",Context.MODE_PRIVATE);
+            final SharedPreferences.Editor ed2 = sp2.edit();
             try {
                 pname=acct.getDisplayName();
+                int index = pname.indexOf(" ");
+                String userid = "";
+                if( index != -1) {
+                     userid = pname.substring(0,index);
+
+                }
+                else {
+                    userid = pname;
+                }
                 personId = acct.getId();
                 editor.putBoolean("LStatus", true);
                 editor.putBoolean("g+",true);
-                editor.apply();
                 personEmail = acct.getEmail();
-                if(acct.getPhotoUrl().toString()!=null)
+                //personId = personId.substring(0,4);
+                int len = personId.length();
+                len = len - 4;
+                userid = userid + personId.substring(len);
+                ed2.putString("Name",pname);
+                ed2.putString("EmailId",personEmail);
+                // ed2.putString("Phoneno",response.getString("Phoneno"));
+                ed2.putString("username",userid);
+
+                editor2.putString("sellerid",userid);
+                editor2.putString("username",pname);
+                editor2.apply();
+                editor.apply();
+                ed2.apply();
+                if(acct.getPhotoUrl()!=null){
                     personPhoto = acct.getPhotoUrl().toString();
+                    editor.putString("url",personPhoto);
+                    ed2.putString("url",personPhoto);
+                }
+                editor.apply();
+                ed2.apply();
 
                // mStatusTextView.setText(getString(R.string.signed_in_fmt,pname ));
             }catch (NullPointerException nl){
@@ -219,21 +454,26 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
            Log.e("G+",String.valueOf(sharedPreferences.getBoolean("g+",false)));
             updateUI(true);
             boolean gout = sharedPreferences.getBoolean("gout",false);
-            if (gout){
+            Log.d("got:",String.valueOf(gout));
+           /* if (gout){
                 editor.putBoolean("gout",false);
-                editor.putBoolean("LStatus", false);
-                editor.putBoolean("g+",false);
-                editor.apply();
 
-            }
-            else {
+                editor.apply();
+                //signOut();
+
+            }*/
+           // signOut();
+            if (mGoogleApiClient.isConnected()) {
                 Intent i = new Intent(login.this, MainActivity.class);
+                signOut();
                 //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i.putExtra("name", personEmail);
+                // i.putExtra("url",personPhoto);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
                 startActivity(i);
-                finish();
             }
+
 
         } else {
             // Signed out, show unauthenticated UI.
@@ -244,6 +484,7 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
 
     // [START signIn]
     private void signIn() {
+
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
         Toast.makeText(getApplicationContext(),"Signing",Toast.LENGTH_SHORT).show();
@@ -252,15 +493,33 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
 
     // [START signOut]
     public void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        updateUI(false);
-                        // [END_EXCLUDE]
-                    }
-                });
+
+
+
+           // if(mGoogleApiClient.isConnected()){
+
+                Log.e("before soingout",String.valueOf(mGoogleApiClient.isConnected()));
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            // [START_EXCLUDE]
+                            updateUI(false);
+                          /*  Intent i = new Intent(login.this, MainActivity.class);
+                            //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            i.putExtra("name", personEmail);
+                            // i.putExtra("url",personPhoto);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                            startActivity(i);
+                            finish();*/
+                            // }
+                            // [END_EXCLUDE]
+                        }
+                    });
+        //}
+
+        Log.e("After soingout",String.valueOf(mGoogleApiClient.isConnected()));
     }
     // [END signOut]
 
@@ -285,14 +544,18 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            Log.d("result",String.valueOf(result.getStatus()));
             handleSignInResult(result);
+        }
+        else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     public void startprogress(){
         pDialog = new ProgressDialog(login.this);
 
-        pDialog.setMessage("Attempting for login...");
+        pDialog.setMessage("Attempting for Login...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
@@ -332,6 +595,10 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
             e.printStackTrace();
         }
 
+       editor2 = sharedPreferences2.edit();
+        final SharedPreferences sp2 = getSharedPreferences("offlineprofile",Context.MODE_PRIVATE);
+        final SharedPreferences.Editor ed2 = sp2.edit();
+
         JsonObjectRequest myReq = new JsonObjectRequest(Request.Method.POST,
                 LOGIN_URL,
                 jo,
@@ -342,10 +609,19 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
                         try {
                             Toast.makeText(getApplicationContext(),response.getString("message"),Toast.LENGTH_SHORT).show();
                             int success = response.getInt("success");
+
                             if(success==1) {
                                 Intent i = new Intent(login.this, MainActivity.class);
                                 //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                ed2.putString("Name",response.getString("Name"));
+                                ed2.putString("EmailId",response.getString("EmailId"));
+                                ed2.putString("Phoneno",response.getString("Phoneno"));
+                                ed2.putString("username",username);
+                                ed2.apply();
                                 i.putExtra("name",username);
+                                editor2.putString("sellerid",username);
+                                editor2.putString("username",username);
+                                editor2.apply();
                                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 editor.putBoolean("LStatus", true);
                                 editor.putBoolean("g+",false);
@@ -432,6 +708,16 @@ public class login extends AppCompatActivity implements  GoogleApiClient.OnConne
                 revokeAccess();
                 break;*/
         }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.karan.bookdemo" >
+    package="com.example.karan.bookdemo">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,34 +8,38 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <!-- GCM requires a Google account. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <permission
-        android:name="com.example.karan.gcmuser.permission.C2D_MESSAGE"
+        android:name="com.example.karan.bookdemo.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.karan.bookdemo.permission.C2D_MESSAGE" />
+    <!-- This app has permission to register and receive dataf message. -->
+    <uses-permission android:name="com.example.karan.bookdemo.permission.RECEIVE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
         android:name=".chat.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/appicon"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-
         <activity
             android:name=".splash"
             android:label="@string/app_name"
-            android:theme="@style/SplashTheme" >
+            android:theme="@style/SplashTheme">
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +50,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,7 +61,7 @@
             android:name=".login"
             android:label="@string/title_activity_login"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/login" >
+            android:theme="@style/login">
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -66,7 +70,7 @@
         <activity
             android:name=".CatgView"
             android:label="@string/title_activity_catg_view"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.karan.bookdemo.MainActivity" />
@@ -74,7 +78,7 @@
         <activity
             android:name=".RGridView"
             android:label="@string/title_activity_rgrid_view"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.karan.bookdemo.MainActivity" />
@@ -82,8 +86,8 @@
         <activity
             android:name=".Product_detail"
             android:label="@string/title_activity_product_detail"
-            android:parentActivityName=".MainActivity" >
->
+            android:parentActivityName=".MainActivity">
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.karan.bookdemo.MainActivity" />
@@ -91,7 +95,7 @@
         <activity
             android:name=".signup"
             android:label="@string/title_activity_signup"
-            android:parentActivityName=".login" >
+            android:parentActivityName=".login">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.karan.bookdemo.login" />
@@ -99,47 +103,91 @@
         <activity
             android:name=".sellbook"
             android:label="@string/title_activity_sellbook"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.karan.bookdemo.MainActivity" />
         </activity>
         <activity
             android:name=".ZxingDemo"
-            android:label="Scanner">
-
-        </activity>
+            android:label="Scanner" />
         <activity
             android:name=".ChatList"
             android:label="Chat"
-            android:screenOrientation="portrait" >
-        </activity>
-
-        <service
-            android:name=".chat.CustomGCMService"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".gps"
-            android:label="@string/title_activity_location" >
-        </activity>
+            android:label="@string/title_activity_location" />
         <activity
             android:name=".SellerInfo"
-            android:label="@string/title_activity_seller_info" >
-        </activity>
+            android:label="@string/title_activity_seller_info" />
         <activity
             android:name=".SearchActivity"
             android:label="@string/title_activity_search_acivity"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.karan.bookdemo.MainActivity" />
         </activity>
+        <activity
+            android:name=".SellerProfile"
+            android:label="@string/title_activity_my_profile" />
+        <activity
+            android:name=".Edit_profile"
+            android:label="@string/title_activity_edit_profile" />
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.example.karan.bookdemo" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".chat.MyGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener] -->
+        <!-- [START instanceId_listener] -->
+        <service
+            android:name=".chat.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <!-- [END instanceId_listener] -->
+        <service
+            android:name=".chat.RegistrationIntentService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".MyProfile"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.karan.bookdemo.MainActivity" />
+        </activity>
+        <activity android:name=".UpdateBooks" />
+        <activity android:name=".EditInventory"></activity>
     </application>
 
 </manifest>

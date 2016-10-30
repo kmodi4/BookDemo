@@ -21,6 +21,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Radpater radpater;
+    private List<listinfo> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,10 @@ public class SearchActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        }
+        Bundle b = getIntent().getExtras();
+        if (b!=null){
+            data = b.getParcelableArrayList("object");
         }
         recyclerView = (RecyclerView) findViewById(R.id.recycleview3);
         ScaleInAnimator animator = new ScaleInAnimator();
@@ -69,12 +74,12 @@ public class SearchActivity extends AppCompatActivity {
 
                 final List<listinfo> filteredList = new ArrayList<>();
 
-                for (int i = 0; i < MainActivity.getData().size(); i++) {
+                for (int i = 0; i < data.size(); i++) {
 
-                    final String text = MainActivity.getData().get(i).title.toLowerCase();
+                    final String text = data.get(i).title.toLowerCase();
                     if (text.contains(newText)) {
 
-                        filteredList.add(MainActivity.getData().get(i));
+                        filteredList.add(data.get(i));
                     }
                 }
                 radpater = new Radpater(SearchActivity.this,filteredList);

@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cmv_arrowGravity="start"
     app:cmv_arrowPosition="left"
-    app:cmv_backgroundColor="#8800bcd4"
+    app:cmv_backgroundColor="#b3ffb3"
     app:cmv_backgroundColorPressed="#ff00bcd4"
     app:cmv_cornerRadius="3dp"
     app:cmv_showArrow="true"
@@ -18,6 +18,9 @@
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:maxWidth="300dp"
+            android:textSize="17sp"
             android:text="@string/hello_world" />
     </me.himanshusoni.chatmessageview.ChatMessageView>
 

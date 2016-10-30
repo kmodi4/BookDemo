@@ -1,43 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    android:id="@+id/cv"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cv"
-        card_view:cardCornerRadius="22dp"
-        card_view:contentPadding="4dp"
-        android:layout_marginTop="10dp"
-        android:elevation="8dp">
+        android:layout_height="wrap_content">
+
+        <ImageView
+
+            android:id="@+id/custImg"
+            android:layout_width="100dp"
+            android:layout_height="115dp"
+            android:src="@mipmap/ic_launcher" />
+
         <LinearLayout
+            android:layout_toRightOf="@+id/custImg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:id="@+id/details"
+            android:orientation="vertical"
+            android:layout_height="100dp">
 
+            <TextView
+                android:gravity="center_vertical"
+                android:id="@+id/CustTxt"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginLeft="5dp"
+                android:hint="Title"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
+            <TextView
 
-    <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:id="@+id/custImg"
-        android:src="@mipmap/ic_launcher"
-        android:padding="8dp"/>
+                android:gravity="center_vertical"
+                android:id="@+id/Cust_original_price"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="5dp"
+                android:hint="ORIGIBAL PRICE"
+                android:textStyle="bold" />
+            <TextView
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginStart="48dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="newView"
-        android:padding="8dp"
-        android:gravity="center"
-        android:textColor="#0000ff"
-        android:id="@+id/CustTxt" />
+                android:gravity="center_vertical"
+                android:id="@+id/Cust_your_price"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="5dp"
+                android:hint="ORIGIBAL PRICE"
+                android:textStyle="bold" />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
